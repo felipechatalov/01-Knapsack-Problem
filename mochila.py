@@ -31,21 +31,58 @@ def knapsack_memo(values, weights, items, capacity):
     print(sys.getsizeof(K))
     return K[items][capacity]
 
-def knapsack_memo2(values, weights, items, capacity, memo):
-    # caso base, quando nao ha mais itens ou quanto o limite de peso eh 0
-    if memo[items][capacity] != -1:
-        return memo[items][capacity]
-    if items == 0 or capacity == 0:
-        return 0
-    # se o peso do item for maior que o limite de peso, nao o coloca na mochila
-    if weights[items-1] > capacity:
-        return knapsack_memo2(values, weights, items-1, capacity, memo)
-    else:
-        # retorna o maior valor entre o valor do item + o valor que ja esta na mochila
-        # e o valor que ja esta na mochila
-        memo[items][capacity] = max(values[items-1] + knapsack_memo2(values, weights, items-1, capacity-weights[items-1], memo),
-                                        knapsack_memo2(values, weights, items-1, capacity, memo))
-        return memo[items][capacity]
+def get_knapsack_value(config, values, weights, items, capacity):
+    # retorna o valor da configuracao atual de itens na mochila
+    # caso o peso passe da capacidade max, retorna 0
+    value = 0
+    w = 0
+    for i in range(items):
+        value += config[i] * values[i]
+        w += config[i] * weights[i]
+    return value if w <= capacity else 0
+
+def get_neightbours(solution, values, weights, items, capacity):
+    results_sol = [] # lista de solucoes vizinhas
+    results_val = [] # lista de valores das solucoes vizinhas
+    for i in range(items):
+        # inverte o valor do item i
+        solution[i] = 1 - solution[i] 
+        # adiciona a solucao vizinha, precisa ser uma copia para nao mandar um ponteiro
+        # e alterar a solucao original
+        results_sol.append(solution.copy())
+        # adiciona o valor da solucao vizinha
+        results_val.append(get_knapsack_value(solution, values, weights, items, capacity)) 
+        # inverte o valor do item i novamente para voltar a solucao original
+        solution[i] = 1 - solution[i] 
+    return results_sol, results_val
+
+def tabu_knapsack(values, weights, items, capacity):
+    # inicializa a melhor solucao com 0 em todos os itens
+    # melhor valor, no caso 0 ate o momento e o tempo sem progresso
+    best_sol = [0 for i in range(items)]
+    best_val = 0
+    iter_wout_progress = 0
+    # numero arbitrario de iteracoes sem progresso
+    while iter_wout_progress < items:
+        # pega as solucoes vizinhas e seus valores
+        configs, n_values = get_neightbours(best_sol, values, weights, items, capacity)
+        # print(configs)
+        # print(n_values)
+        # pega a melhor solucao vizinha e considera-se a melhor atual
+        for i in range(len(n_values)):
+            if n_values[i] > best_val:
+                best_val = n_values[i]
+                best_sol = configs[i]
+                # print("progress: ", best_sol)
+                # reseta o contador de iteracoes sem progresso, ou adiciona 1 caso nao tenhamos progresso
+                iter_wout_progress = 0
+            else:
+                iter_wout_progress += 1
+
+
+    print(best_sol)
+    return best_val
+
 
 def main():
     
@@ -69,23 +106,24 @@ def main():
 
 
     # print(capacity)
-    # print(values)
-    # print(weights)
+    print(values)
+    print(weights)
     # print(items)
 
 
     print("\nTime for each function with", items, "items and", capacity, "weight limit\n")
     print("---------------------------------------------------------\n")
 
-    # b = time.time()
-    # print("Python Knapsack: ", knapsack(values, weights, items, capacity), "in ", time.time()-b, "seconds")
+    # b = time.perf_counter()
+    # print("Python Knapsack: ", knapsack(values, weights, items, capacity), "in ", time.perf_counter()-b, "seconds")
 
-    # b = time.time() 
-    # print("\nPython Knapsack with memo: ", knapsack_memo(values, weights, items, capacity), "in ", time.time()-b, "seconds")
+    b = time.perf_counter() 
+    print("\nPython Knapsack with memo: ", knapsack_memo(values, weights, items, capacity), "in ", time.perf_counter()-b, "seconds")
 
-    # b = time.time()
-    # memo = [[-1 for x in range(capacity + 1)] for x in range(items + 1)]
-    # print("\nPython Knapsack with memo (alternative): ", knapsack_memo2(values, weights, items, capacity, memo), "in ", time.time()-b, "seconds")
+    b = time.perf_counter()
+    print("\nTabu Knapsack: ", tabu_knapsack(values, weights, items, capacity), "in ", time.perf_counter()-b, "seconds")
+
+
 
 if __name__ == "__main__":
     main()

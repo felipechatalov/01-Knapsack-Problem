@@ -7,8 +7,8 @@ def main():
 
     subprocess.call(["python", "./mochila.py"])
     
-    subprocess.call(["gcc", "./mochila.c", "-o", "./mochila"])
-    subprocess.call([".\mochila.exe"])
+    # subprocess.call(["gcc", "./mochila.c", "-o", "./mochila"])
+    # subprocess.call([".\mochila.exe"])
 
 main()
 

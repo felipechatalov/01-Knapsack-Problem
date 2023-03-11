@@ -1,0 +1,25 @@
+int knapsack(int values[] , int weights[], int items, int capacity){
+    if (items == 0 || capacity == 0){
+        return 0;
+    }
+
+    if (weights[items - 1] > capacity){
+        return knapsack(values, weights, items - 1, capacity);
+    }
+
+    int a = values[items-1] + knapsack(values, weights, items-1, capacity-weights[items-1]);
+    int b = knapsack(values, weights, items-1, capacity);
+    return __max(a, b);
+}
+
+void main(){
+    int values[100] = {22, 74, 3, 82, 2, 35, 89, 79, 57, 41, 18, 15, 18, 40, 73, 46, 31, 2, 24, 36, 52, 84, 88, 37, 90, 76, 55, 91, 44, 7, 46, 54, 94, 54, 38, 91, 35, 79, 69, 88, 38, 32, 35, 10, 100, 93, 53, 91, 76, 13, 90, 49, 8, 46, 13, 48, 51, 70, 66, 85, 21, 78, 100, 80, 18, 81, 58, 19, 4, 32, 12, 59, 42, 39, 52, 51, 66, 77, 34, 91, 61, 2, 76, 62, 91, 54, 76, 5, 38, 79, 84, 50, 30, 38, 64, 12, 4, 18, 45, 47, 55, 46, 32, 3, 38, 73, 57, 99, 65, 77}
+    int weigths[100] = {82, 5, 13, 61, 36, 67, 9, 18, 39, 69, 50, 26, 41, 17, 7, 7, 17, 41, 44, 41, 59, 69, 61, 56, 65, 96, 67, 100, 82, 100, 18, 12, 42, 3, 36, 44, 37, 77, 43, 81, 40, 32, 44, 29, 98, 35, 21, 29, 84, 37, 61, 64, 99, 6, 93, 81, 59, 5, 10, 69, 58, 86, 36, 66, 73, 26, 1, 95, 69, 68, 58, 95, 30, 2, 70, 5, 45, 33, 69, 13, 90, 25, 24, 35, 75, 36, 40, 10, 78, 17, 32, 98, 59, 28, 84, 89, 85, 58, 5, 15, 94, 22, 94, 85, 50, 75, 29, 83, 17, 8}
+    int capacity = 100;
+
+    clock_t start = clock();
+    printf("\nC knapsack: %d in %d seconds", knapsack(values, weigths, 100, capacity), (int)time(NULL)-(int)now);
+    clock_t end = clock();
+    printf("\nTime: %f", (double)(end-start)/CLOCKS_PER_SEC);
+
+}

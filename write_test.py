@@ -10,7 +10,6 @@ def generate_values_and_weights(items, weight_limit):
         weights.append(random.randint(1, weight_limit))
     return values, weights
 
-
 def main():
 
     # for python, knapsack...
@@ -19,8 +18,8 @@ def main():
     # finishing in ~4 seconds
 
 
-    values, weights = generate_values_and_weights(517, 100)
-    capacity = 1000
+    values, weights = generate_values_and_weights(200, 100)
+    capacity = 250
 
     fopen = open("test/values.txt", "w")
     while len(values) > 0:
