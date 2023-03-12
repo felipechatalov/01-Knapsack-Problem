@@ -2,23 +2,28 @@
 import random 
 import time
 
+# gera valores aleatorios baseado em quantos items e qual o peso maximo
 def generate_values_and_weights(items, weight_limit):
     values = []
     weights = []
     for i in range(items):
+        # valores de cada item varia de 1 a 100, enquanto os pesos podem variar ate o limite de peso
         values.append(random.randint(1, 100))
         weights.append(random.randint(1, weight_limit))
     return values, weights
 
 def main():
 
-    # for python, knapsack...
 
-    # for python, knapsack_memo can handle 5000 items and 2000 capacity
+    # in python, knapsack_memo can handle 5000 items and 2000 capacity
     # finishing in ~4 seconds
 
 
-    values, weights = generate_values_and_weights(200, 100)
+    # knapsack_memo pode lidar com 5000 itens e 2000 de capacidade
+    # termina em ~4 segundos
+    # knapsack
+
+    values, weights = generate_values_and_weights(30, 100)
     capacity = 250
 
     fopen = open("test/values.txt", "w")

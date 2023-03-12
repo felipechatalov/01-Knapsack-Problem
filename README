@@ -1,0 +1,11 @@
+Algoritmos para resolver o problema da mochila binaria.
+
+Neste repositorio temos algoritmos que resolvem de maneira perfeita ou aproximada
+o problema da mochila binaria, usando metodos recursivos, memorizacao e algoritmo guloso.
+Tambem temos series de testes automatizados e aleatorios
+
+Todos os algoritmos estao dentro do arquivo 'mochila.py', com nomes de 'knapsack',
+'knapsack_memo' e 'knapsack_tabu'. Para rodar o script, basta escrever no terminal
+'python3 test.py', caso queira criar um novo set de arquivos para test, com valores e pesos
+basta rodar o arquivo 'write_test.py' ou para fazer tudo de uma vez, rode o arquivo
+'run_tests.py'
